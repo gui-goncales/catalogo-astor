@@ -1,0 +1,68 @@
+.more-options{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 20px 20px;
+}
+
+.more-options td {
+    border-bottom: none;
+    background-color: transparent !important;
+    border-bottom-width: 0 !important;
+    box-shadow: none !important
+}
+
+.hiddenRow {
+    padding: 0 !important;
+    margin: 0;
+}
+
+
+.aditional_details {
+    width: 100%;
+    padding: 20px 20px;
+}
+
+.aditional_details h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.aditional_details p {
+    color: #5a5a5a;
+    text-transform: initial;
+    font-weight: 400;
+    margin-bottom: 0px;
+}
+
+.btnAccordion {
+    background-color: transparent !important;
+    border: 0 !important;
+    outline: none;
+}
+
+.btnAccordion:hover,
+.btnAccordion:focus,
+.btnAccordion:active,
+.btn-primary:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btnAccordion:hover span,
+.btnAccordion:focus span,
+.btnAccordion:active span {
+    color: #e74651;
+}
+
+.btnAccordion span {
+    color: #151c29;
+}
+
+@media (max-width: 40rem) {
+    .more-options {
+        padding: 20px 10px;
+    }
+}
