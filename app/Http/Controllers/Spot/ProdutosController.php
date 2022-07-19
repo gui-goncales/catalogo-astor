@@ -27,7 +27,7 @@ class ProdutosController extends Controller
         $categoria = ProdutoSpot::select('Type')->distinct()->orderByRaw("Type ASC")->get();
         $tamanhos = ProdutoSpot::select('CombinedSizes')->distinct()->orderByRaw("CombinedSizes ASC")->get();
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'quantidade'));
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos'));
 
     }
 

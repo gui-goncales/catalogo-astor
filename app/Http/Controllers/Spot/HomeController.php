@@ -208,6 +208,6 @@ class HomeController extends Controller
         //GET COLORS AVAILABLE
         $cores = $this->getColors($colorsDataBase);
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'quantidade'));
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos'));
     }
 }
