@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Spot;
 
 use App\Models\ProdutoSpot;
+use App\Models\SkuQuantity;
+use App\Models\productOptionalsSpot;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -29,15 +31,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //Calculo Data Produtos Total
+        $ultimoProdutos = DB::table('produto_spot')->latest('ProdReference')->first();
 
-        //Calculo Data
-        $ultimo = DB::table('produto_spot')->latest('ProdReference')->first();
-
-        if (!is_null($ultimo)) {
-            $diff = Carbon::now()->diffInMinutes($ultimo->created_at);
+        if (!is_null($ultimoProdutos)) {
+            $diffProdutos = Carbon::now()->diffInMinutes($ultimoProdutos->created_at);
         }
 
-        if (@$diff >= 10080 || is_null($ultimo)) {
+        if (@$diffProdutos >= 10080 || is_null($ultimoProdutos)) {
 
             $consultaToken = Http::get("http://ws.spotgifts.com.br/api/v1/authenticateclient?AccessKey=$this->acessKey")->json();
             $token = $consultaToken['Token'];
@@ -136,15 +137,64 @@ class HomeController extends Controller
                 $produtoSpot->OnlineExclusive = @$value['OnlineExclusive'];
                 $produtoSpot->NewProduct = @$value['NewProduct'];
                 $produtoSpot->YourPrice = @$value['YourPrice'];
-
-                // $produtoSpot->ProductOptionals = @$value['ProductOptionals'];
-                // $produtoSpot->Components = @$value['Components'];   
-
                 $produtoSpot->CertificateFiles = @$value['CertificateFiles'];
                 $produtoSpot->Catalogs = @$value['Catalogs'];
                 $produtoSpot->UpdateDate = @$value['UpdateDate'];
-
                 $produtoSpot->save();
+
+                foreach($value['ProductOptionals'] as $cadaUm2 => $value2)
+                {
+                    $productOptionalsSpot = new productOptionalsSpot;
+                    $productOptionalsSpot->ProdReference = @$value['ProdReference'];
+                    $productOptionalsSpot->Sku = @$value2['Sku'];
+                    $productOptionalsSpot->Size = @$value2['Size'];
+                    $productOptionalsSpot->ColorDesc1 = @$value2['ColorDesc1'];
+                    $productOptionalsSpot->ColorHex1 = @$value2['ColorHex1'];
+                    $productOptionalsSpot->ColorCode = @$value2['ColorCode'];
+                    $productOptionalsSpot->WebSku = @$value2['WebSku'];
+                    $productOptionalsSpot->SizeLengthCM = @$value2['SizeLengthCM'];
+                    $productOptionalsSpot->SizeWidthCM = @$value2['SizeWidthCM'];
+                    $productOptionalsSpot->LastSale = @$value2['LastSale'];
+                    $productOptionalsSpot->save();
+                }
+
+            }
+        }
+
+        //Calculo Data Estoque Produtos
+        $ultimoEstoque = DB::table('sku_quantity_spot')->latest('Sku')->first();
+
+        if (!is_null($ultimoEstoque)) {
+            $diffEstoque = Carbon::now()->diffInMinutes($ultimoEstoque->created_at);
+        }
+
+        if (@$diffEstoque >= 15 || is_null($ultimoEstoque)) {
+
+            $consultaToken = Http::get("http://ws.spotgifts.com.br/api/v1/authenticateclient?AccessKey=$this->acessKey")->json();
+            $token = $consultaToken['Token'];
+            $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/stocks?token=$token&lang=PT")->json();
+
+            foreach ($retorno['Stocks'] as $key => $value) {
+
+                $SkuQuantity = new SkuQuantity;
+                $SkuQuantity->Sku = $value['Sku'];
+                $SkuQuantity->Quantity = $value['Quantity'];
+                $SkuQuantity->NextQuantity1 = $value['NextQuantity1'];
+                $SkuQuantity->NextDate1 = $value['NextDate1'];
+                $SkuQuantity->NextQuantity2 = $value['NextQuantity2'];
+                $SkuQuantity->NextDate2 = $value['NextDate2'];
+                $SkuQuantity->NextQuantity3 = $value['NextQuantity3'];
+                $SkuQuantity->NextDate3 = $value['NextDate3'];
+                $SkuQuantity->NextQuantity4 = $value['NextQuantity4'];
+                $SkuQuantity->NextDate4 = $value['NextDate4'];
+                $SkuQuantity->NextQuantity5 = $value['NextQuantity5'];
+                $SkuQuantity->NextDate5 = $value['NextDate5'];
+                $SkuQuantity->NextQuantity6 = $value['NextQuantity6'];
+                $SkuQuantity->NextDate6 = $value['NextDate6'];
+                $SkuQuantity->WebSku = $value['WebSku'];
+                $SkuQuantity->Country = $value['Country'];
+
+                $SkuQuantity->save();
             }
         }
 
@@ -157,7 +207,7 @@ class HomeController extends Controller
 
         //GET COLORS AVAILABLE
         $cores = $this->getColors($colorsDataBase);
-        
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos'));
+
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'quantidade'));
     }
 }

@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- @dd($response) --}}
     @include('spot.filtros')
     <div class="conteudo col-12 shadow-sm" style="width: 100%; overflow-x: auto;">
         <div class="container">

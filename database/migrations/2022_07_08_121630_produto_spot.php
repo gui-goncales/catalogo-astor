@@ -105,10 +105,7 @@ class ProdutoSpot extends Migration
             $table->tinyInteger('OnlineExclusive')->nullable();
             $table->tinyInteger('NewProduct')->nullable();
             $table->string('YourPrice')->nullable();
-            
-            // $table->string('ProductOptionals')->nullable();
-            // $table->string('Components')->nullable();
-
+            $table->text('ProductOptionals')->nullable();
             $table->string('CertificateFiles')->nullable();
             $table->string('Catalogs')->nullable();
             $table->string('UpdateDate')->nullable();

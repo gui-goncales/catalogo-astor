@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Spot;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProdutoSpot;
+use App\Models\SkuQuantity;
 use Illuminate\Http\Request;
 
 class ProdutosController extends Controller
@@ -26,7 +27,7 @@ class ProdutosController extends Controller
         $categoria = ProdutoSpot::select('Type')->distinct()->orderByRaw("Type ASC")->get();
         $tamanhos = ProdutoSpot::select('CombinedSizes')->distinct()->orderByRaw("CombinedSizes ASC")->get();
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos'));
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'quantidade'));
 
     }
 
