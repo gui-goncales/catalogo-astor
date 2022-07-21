@@ -121,10 +121,16 @@
                         </tr>
 
                         <tr class=" more-options col-12" id="more-information-{{ $value['ProdReference'] }}" style="display:none; ">
+                            <?php 
                                 
-                                <!-- <td class="hiddenRow" colspan="5">
-                                    {{-- <img src="https://www.spotgifts.com.br/fotos/produtos/{{$value['MainImage']}}" alt="{{ $value['Name'] }}"> --}}
-                                </td> -->
+
+                                $oi = array_key_exists($value['ProdReference'], $skus);
+
+                                dd($oi);
+                                
+                                
+                            ?>
+                              
                             <td class="hiddenRow" colspan="8">
                                 <ul class="aditional_details shadow-sm"> 
                                     <h2>Informações Adicionais</h2>

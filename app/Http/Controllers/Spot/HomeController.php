@@ -162,7 +162,7 @@ class HomeController extends Controller
         }
 
         //Calculo Data Estoque Produtos
-        $ultimoEstoque = DB::table('sku_quantity_spot')->latest('Sku')->first();
+        $ultimoEstoque = DB::table('sku_quantity_spot')->latest('sku')->first();
 
         if (!is_null($ultimoEstoque)) {
             $diffEstoque = Carbon::now()->diffInMinutes($ultimoEstoque->created_at);
@@ -208,6 +208,8 @@ class HomeController extends Controller
         //GET COLORS AVAILABLE
         $cores = $this->getColors($colorsDataBase);
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos'));
+        $skus = $this->getSkus();
+
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'skus'));
     }
 }

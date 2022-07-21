@@ -22,7 +22,6 @@ Route::get('/', [App\Http\Controllers\DecidingController::class, 'index'])->name
 Route::get('/spot', [App\Http\Controllers\Spot\HomeController::class, 'index'])->name('spot');
 Route::get('/spot/home', [App\Http\Controllers\Spot\HomeController::class, 'index'])->name('homeSpot');
 Route::get('/spot/consultaBanco', [App\Http\Controllers\Spot\ProdutosController::class, 'consultaBanco'])->name('consultaBancoSpot');
-Route::get('/spot/view/{ProdReference}', [App\Http\Controllers\Spot\ProdutosController::class, 'viewProduct'])->name('viewProduct');
 
 //SPOT ORDERS FILTERS ROUTES
 Route::get('/spot/consultaBanco/orderCodigo', [App\Http\Controllers\spot\ProdutosController::class, 'orderCodigo'])->name('orderCodigoSpot');
