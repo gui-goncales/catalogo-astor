@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use App\Models\SkuQuantity;
+use  App\Models\ProdutoSpot;
 
 class Controller extends BaseController
 {
@@ -52,10 +53,18 @@ class Controller extends BaseController
             $array[$value->ProdReference][$value->Sku]['NextQuantity'] = $result[0]->NextQuantity1;
             $array[$value->ProdReference][$value->Sku]['NextDate'    ] = $result[0]->NextDate1;
         }
-
-        
-
         return $array;
+    }
 
+    public function sqlOrderExec($ordem, $upOrDown, $request)
+    {
+        return ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
+                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
+                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
+                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
+                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
+                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
+                ->orderByRaw("$ordem $upOrDown")
+                ->paginate(100)->appends(request()->query());
     }
 }

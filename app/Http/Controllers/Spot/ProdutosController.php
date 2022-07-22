@@ -4,11 +4,28 @@ namespace App\Http\Controllers\Spot;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProdutoSpot;
-use App\Models\SkuQuantity;
 use Illuminate\Http\Request;
 
 class ProdutosController extends Controller
 {
+
+    protected $colorsDataBase = "";
+    protected $cores = "";
+    protected $brand = "";
+    protected $categoria = "";
+    protected $tamanhos = "";
+    protected $skus = "";
+
+    public function setFilter()
+    {
+        $this->colorsDataBase = ProdutoSpot::select('Colors')->orderByRaw("Colors ASC")->get();
+        $this->cores = $this->getColors($this->colorsDataBase);
+        $this->brand = ProdutoSpot::select('Brand')->orderByRaw("Brand ASC")->distinct()->get();
+        $this->categoria = ProdutoSpot::select('Type')->distinct()->orderByRaw("Type ASC")->get();
+        $this->tamanhos = ProdutoSpot::select('CombinedSizes')->distinct()->orderByRaw("CombinedSizes ASC")->get();
+        $this->skus = $this->getSkus();
+    }
+    
     public function consultaBanco(Request $request)
     {
 
@@ -20,22 +37,16 @@ class ProdutosController extends Controller
                     ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
                     ->paginate(100)->appends(request()->query());
                     
-        //GET COLORS AVAILABLE
-        $colorsDataBase = ProdutoSpot::select('Colors')->orderByRaw("Colors ASC")->get();
-        $cores = $this->getColors($colorsDataBase);
-        $brand = ProdutoSpot::select('Brand')->orderByRaw("Brand ASC")->distinct()->get();
-        $categoria = ProdutoSpot::select('Type')->distinct()->orderByRaw("Type ASC")->get();
-        $tamanhos = ProdutoSpot::select('CombinedSizes')->distinct()->orderByRaw("CombinedSizes ASC")->get();
+         //GET COLORS AVAILABLE
+        $this->setFilter();
+        $colorsDataBase = $this->colorsDataBase;
+        $cores = $this->cores;
+        $brand = $this->brand;
+        $categoria = $this->categoria;
+        $tamanhos = $this->tamanhos;
+        $skus = $this->skus;
 
         return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos'));
-
-    }
-
-    function viewProduct(Request $request, $ProdReference){
-        
-        $response = ProdutoSpot::where('ProdReference', '=', $ProdReference)->get();
-
-        return view('spot.view', compact('response'));
 
     }
 
@@ -45,38 +56,28 @@ class ProdutosController extends Controller
         switch ($request->parameter) {
 
             case 'up':
-                $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
-                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
-                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
-                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
-                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
-                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
-                ->orderByRaw("ProdReference ASC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "ASC";
                 $codigoFiltragem = TRUE;
                 break;
 
             case 'down':
-                $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
-                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
-                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
-                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
-                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
-                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
-                ->orderByRaw("ProdReference DESC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "DESC";
                 $codigoFiltragem = FALSE;
                 break;
         }
+
+        $response = Controller::sqlOrderExec("ProdReference", $upOrDown, $request);
                     
         //GET COLORS AVAILABLE
-        $colorsDataBase = ProdutoSpot::select('Colors')->orderByRaw("Colors ASC")->get();
-        $cores = $this->getColors($colorsDataBase);
-        $brand = ProdutoSpot::select('Brand')->orderByRaw("Brand ASC")->distinct()->get();
-        $categoria = ProdutoSpot::select('Type')->distinct()->orderByRaw("Type ASC")->get();
-        $tamanhos = ProdutoSpot::select('CombinedSizes')->distinct()->orderByRaw("CombinedSizes ASC")->get();
+        $this->setFilter();
+        $colorsDataBase = $this->colorsDataBase;
+        $cores = $this->cores;
+        $brand = $this->brand;
+        $categoria = $this->categoria;
+        $tamanhos = $this->tamanhos;
+        $skus = $this->skus;
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'codigoFiltragem'));
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'codigoFiltragem', 'skus'));
     }
 
     public function orderNome(Request $request)
@@ -85,38 +86,28 @@ class ProdutosController extends Controller
         switch ($request->parameter) {
 
             case 'up':
-                $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
-                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
-                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
-                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
-                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
-                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
-                ->orderByRaw("Name ASC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "ASC";
                 $nomeFiltragem = TRUE;
                 break;
 
             case 'down':
-                $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
-                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
-                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
-                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
-                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
-                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
-                ->orderByRaw("Name DESC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "DESC";
                 $nomeFiltragem = FALSE;
                 break;
         }
+
+        $response = Controller::sqlOrderExec("Name", $upOrDown, $request);
                     
         //GET COLORS AVAILABLE
-        $colorsDataBase = ProdutoSpot::select('Colors')->orderByRaw("Colors ASC")->get();
-        $cores = $this->getColors($colorsDataBase);
-        $brand = ProdutoSpot::select('Brand')->orderByRaw("Brand ASC")->distinct()->get();
-        $categoria = ProdutoSpot::select('Type')->distinct()->orderByRaw("Type ASC")->get();
-        $tamanhos = ProdutoSpot::select('CombinedSizes')->distinct()->orderByRaw("CombinedSizes ASC")->get();
+        $this->setFilter();
+        $colorsDataBase = $this->colorsDataBase;
+        $cores = $this->cores;
+        $brand = $this->brand;
+        $categoria = $this->categoria;
+        $tamanhos = $this->tamanhos;
+        $skus = $this->skus;
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'nomeFiltragem'));
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'nomeFiltragem', 'skus'));
     }
 
     public function orderCategoria(Request $request)
@@ -125,38 +116,28 @@ class ProdutosController extends Controller
         switch ($request->parameter) {
 
             case 'up':
-                $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
-                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
-                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
-                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
-                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
-                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
-                ->orderByRaw("Type ASC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "ASC";
                 $categoriaFiltragem = TRUE;
                 break;
 
             case 'down':
-                $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
-                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
-                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
-                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
-                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
-                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
-                ->orderByRaw("Type DESC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "DESC";
                 $categoriaFiltragem = FALSE;
                 break;
         }
+
+        $response = Controller::sqlOrderExec("Type", $upOrDown, $request);
                     
         //GET COLORS AVAILABLE
-        $colorsDataBase = ProdutoSpot::select('Colors')->orderByRaw("Colors ASC")->get();
-        $cores = $this->getColors($colorsDataBase);
-        $brand = ProdutoSpot::select('Brand')->orderByRaw("Brand ASC")->distinct()->get();
-        $categoria = ProdutoSpot::select('Type')->distinct()->orderByRaw("Type ASC")->get();
-        $tamanhos = ProdutoSpot::select('CombinedSizes')->distinct()->orderByRaw("CombinedSizes ASC")->get();
+        $this->setFilter();
+        $colorsDataBase = $this->colorsDataBase;
+        $cores = $this->cores;
+        $brand = $this->brand;
+        $categoria = $this->categoria;
+        $tamanhos = $this->tamanhos;
+        $skus = $this->skus;
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'categoriaFiltragem'));
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'categoriaFiltragem', 'skus'));
     }
 
     public function orderMarca(Request $request)
@@ -165,37 +146,27 @@ class ProdutosController extends Controller
         switch ($request->parameter) {
 
             case 'up':
-                $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
-                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
-                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
-                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
-                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
-                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
-                ->orderByRaw("Brand ASC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "ASC";
                 $marcaFiltragem = TRUE;
                 break;
 
             case 'down':
-                $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
-                ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
-                ->where('Colors', 'LIKE', '%'.$request->cor.'%')
-                ->where('Brand', 'LIKE', '%'.$request->brand.'%')
-                ->where('Type', 'LIKE', '%'.$request->categoria.'%')
-                ->where('CombinedSizes', 'LIKE', '%'.$request->tamanho.'%')
-                ->orderByRaw("Brand DESC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "DESC";
                 $marcaFiltragem = FALSE;
                 break;
         }
+
+        $response = Controller::sqlOrderExec("Brand", $upOrDown, $request);
                     
         //GET COLORS AVAILABLE
-        $colorsDataBase = ProdutoSpot::select('Colors')->orderByRaw("Colors ASC")->get();
-        $cores = $this->getColors($colorsDataBase);
-        $brand = ProdutoSpot::select('Brand')->orderByRaw("Brand ASC")->distinct()->get();
-        $categoria = ProdutoSpot::select('Type')->distinct()->orderByRaw("Type ASC")->get();
-        $tamanhos = ProdutoSpot::select('CombinedSizes')->distinct()->orderByRaw("CombinedSizes ASC")->get();
+        $this->setFilter();
+        $colorsDataBase = $this->colorsDataBase;
+        $cores = $this->cores;
+        $brand = $this->brand;
+        $categoria = $this->categoria;
+        $tamanhos = $this->tamanhos;
+        $skus = $this->skus;
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'marcaFiltragem'));
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'marcaFiltragem', 'skus'));
     }
 }
