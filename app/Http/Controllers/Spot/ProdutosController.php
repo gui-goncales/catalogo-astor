@@ -66,7 +66,7 @@ class ProdutosController extends Controller
                 break;
         }
 
-        $response = Controller::sqlOrderExec("ProdReference", $upOrDown, $request);
+        $response = Controller::sqlOrderExecSpot("ProdReference", $upOrDown, $request);
                     
         //GET COLORS AVAILABLE
         $this->setFilter();
@@ -96,7 +96,7 @@ class ProdutosController extends Controller
                 break;
         }
 
-        $response = Controller::sqlOrderExec("Name", $upOrDown, $request);
+        $response = Controller::sqlOrderExecSpot("Name", $upOrDown, $request);
                     
         //GET COLORS AVAILABLE
         $this->setFilter();
@@ -126,7 +126,7 @@ class ProdutosController extends Controller
                 break;
         }
 
-        $response = Controller::sqlOrderExec("Type", $upOrDown, $request);
+        $response = Controller::sqlOrderExecSpot("Type", $upOrDown, $request);
                     
         //GET COLORS AVAILABLE
         $this->setFilter();
@@ -156,7 +156,7 @@ class ProdutosController extends Controller
                 break;
         }
 
-        $response = Controller::sqlOrderExec("Brand", $upOrDown, $request);
+        $response = Controller::sqlOrderExecSpot("Brand", $upOrDown, $request);
                     
         //GET COLORS AVAILABLE
         $this->setFilter();

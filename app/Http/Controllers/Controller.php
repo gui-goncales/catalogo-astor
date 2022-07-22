@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produtos;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -56,7 +57,16 @@ class Controller extends BaseController
         return $array;
     }
 
-    public function sqlOrderExec($ordem, $upOrDown, $request)
+    public function sqlOrderExecXbz($ordem, $upOrDown, $request)
+    {
+        return  Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
+                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
+                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
+                ->orderByRaw("$ordem $upOrDown")
+                ->paginate(100)->appends(request()->query());
+    }
+
+    public function sqlOrderExecSpot($ordem, $upOrDown, $request)
     {
         return ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
                 ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
