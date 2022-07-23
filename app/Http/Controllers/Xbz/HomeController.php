@@ -43,31 +43,31 @@ class HomeController extends Controller
             foreach ($response as $key => $value) {
 
                     $produtos = new Produtos;
-                    $produtos->IdPessoa = $value['IdPessoa'];
-                    $produtos->IdProduto = $value['IdProduto'];
-                    $produtos->CodigoXbz = $value['CodigoXbz'];
+                    // $produtos->IdPessoa = $value['IdPessoa'];
+                    // $produtos->IdProduto = $value['IdProduto'];
+                    // $produtos->CodigoXbz = $value['CodigoXbz'];
                     $produtos->CodigoComposto = $value['CodigoComposto'];
-                    $produtos->CodigoAmigavel = $value['CodigoAmigavel'];
+                    // $produtos->CodigoAmigavel = $value['CodigoAmigavel'];
                     $produtos->Nome = $value['Nome'];
-                    $produtos->SiteLink = $value['SiteLink'];
+                    // $produtos->SiteLink = $value['SiteLink'];
                     $produtos->ImageLink = $value['ImageLink'];
-                    $produtos->WebTipoId = $value['WebTipoId'];
-                    $produtos->WebTipo = $value['WebTipo'];
-                    $produtos->WebSubTipoId = $value['WebSubTipoId'];
-                    $produtos->WebSubTipo = $value['WebSubTipo'];
+                    // $produtos->WebTipoId = $value['WebTipoId'];
+                    // $produtos->WebTipo = $value['WebTipo'];
+                    // $produtos->WebSubTipoId = $value['WebSubTipoId'];
+                    // $produtos->WebSubTipo = $value['WebSubTipo'];
                     $produtos->CorWebPrincipalId = $value['CorWebPrincipalId'];
                     $produtos->CorWebPrincipal = preg_replace('/[^A-Za-z0-9\-]/', ' ', $value['CorWebPrincipal']);
-                    $produtos->CorWebSecundariaId = $value['CorWebSecundariaId'];
-                    $produtos->CorWebSecundaria = preg_replace('/[^A-Za-z0-9\-]/', ' ', $value['CorWebSecundaria']);
+                    // $produtos->CorWebSecundariaId = $value['CorWebSecundariaId'];
+                    // $produtos->CorWebSecundaria = preg_replace('/[^A-Za-z0-9\-]/', ' ', $value['CorWebSecundaria']);
                     $produtos->IdStatusConfiabilidade = $value['IdStatusConfiabilidade'];
 
-                    $produtos->Peso = $value['Peso'];
-                    $produtos->Altura = $value['Altura'];
-                    $produtos->Largura = $value['Largura'];
-                    $produtos->Profundidade = $value['Profundidade'];
+                    // $produtos->Peso = $value['Peso'];
+                    // $produtos->Altura = $value['Altura'];
+                    // $produtos->Largura = $value['Largura'];
+                    // $produtos->Profundidade = $value['Profundidade'];
                     $produtos->PrecoVenda = $value['PrecoVenda'];
 
-                    $produtos->PontaDeEstoque = $value['PontaDeEstoque'];
+                    // $produtos->PontaDeEstoque = $value['PontaDeEstoque'];
                     $produtos->QuantidadeDisponivel = $value['QuantidadeDisponivel'];
                     $produtos->Ncm = $value['Ncm'];
                     $produtos->save();
