@@ -20,7 +20,6 @@ Route::get('/', [App\Http\Controllers\DecidingController::class, 'index'])->name
 
 //SPOT ROUTES
 Route::get('/spot', [App\Http\Controllers\Spot\HomeController::class, 'index'])->name('spot');
-Route::get('/spot/home', [App\Http\Controllers\Spot\HomeController::class, 'index'])->name('homeSpot');
 Route::get('/spot/consultaBanco', [App\Http\Controllers\Spot\ProdutosController::class, 'consultaBanco'])->name('consultaBancoSpot');
 
 //SPOT ORDERS FILTERS ROUTES
@@ -31,7 +30,6 @@ Route::get('/spot/consultaBanco/orderMarca', [App\Http\Controllers\spot\Produtos
 
 //XBZ ROUTES
 Route::get('/xbz', [App\Http\Controllers\Xbz\HomeController::class, 'index'])->name('xbz');
-Route::get('/xbz/home', [App\Http\Controllers\Xbz\HomeController::class, 'index'])->name('home');
 Route::get('/xbz/consultaBanco', [App\Http\Controllers\Xbz\ProdutosController::class, 'consultaBanco'])->name('consultaBanco');
 
 //XBZ ORDERS FILTERS ROUTES
