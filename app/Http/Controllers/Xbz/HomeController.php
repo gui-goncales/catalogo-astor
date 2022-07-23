@@ -27,7 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         //Calculo Data
-        $ultimo = DB::table('produtos')->latest('IdProduto')->first();
+        $ultimo = DB::table('produtos')->latest('CodigoComposto')->first();
 
         if(!is_null($ultimo))
         {
