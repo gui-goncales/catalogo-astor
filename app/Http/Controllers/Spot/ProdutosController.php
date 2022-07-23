@@ -28,7 +28,6 @@ class ProdutosController extends Controller
     
     public function consultaBanco(Request $request)
     {
-
         $response = ProdutoSpot::where('Name', 'LIKE', '%'.$request->nome.'%')
                     ->where('ProdReference', 'LIKE', '%'.$request->codigo.'%')
                     ->where('Colors', 'LIKE', '%'.$request->cor.'%')
@@ -46,8 +45,7 @@ class ProdutosController extends Controller
         $tamanhos = $this->tamanhos;
         $skus = $this->skus;
 
-        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos'));
-
+        return view('spot.home', compact('response', 'cores', 'brand', 'categoria', 'tamanhos', 'skus'));
     }
 
     public function orderCodigo(Request $request)

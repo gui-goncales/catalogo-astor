@@ -37,7 +37,7 @@
                             <td class="hiddenRow" colspan="8">
                                 <ul class="aditional_details shadow-sm"> 
                                     <h2>Informações Adicionais</h2>
-                                    <p>{{$value['ShortDescription']}}</p>
+                                    <p>{{$value['Campos']}}</p>
                                     <p>{{$value['CombinedSizes']}}</p>
                                     <p>{{$value['Colors']}}</p>
                                     @foreach($skus as $key => $sku)
