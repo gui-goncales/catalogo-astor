@@ -43,7 +43,6 @@ class refreshDatabase implements ShouldQueue
         $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/productsTree?token=$token&lang=PT")->json();
 
         ProdutoSpot::truncate();
-        productOptionalsSpot::truncate();
 
         foreach ($retorno['ProductsTree'] as $key => $value) {
             $produtoSpot = new ProdutoSpot;
@@ -181,6 +180,8 @@ class refreshDatabase implements ShouldQueue
                     $SkuQuantity->save();
                 }
             }
+
+            productOptionalsSpot::truncate();
 
             foreach ($value['ProductOptionals'] as $cadaUm2 => $value2) {
                 $productOptionalsSpot = new productOptionalsSpot;
