@@ -40,6 +40,8 @@ class refreshStock implements ShouldQueue
         $token = $consultaToken['Token'];
         $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/stocks?token=$token&lang=PT")->json();
 
+        SkuQuantity::truncate();
+
         foreach ($retorno['Stocks'] as $key => $value) {
 
             $SkuQuantity = new SkuQuantity;
