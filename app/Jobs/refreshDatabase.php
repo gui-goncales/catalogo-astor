@@ -44,10 +44,11 @@ class refreshDatabase implements ShouldQueue
             $diffEstoque = Carbon::now()->diffInMinutes($ultimoEstoque->created_at);
         }
 
-        if (@$diffEstoque >= 15 || is_null($ultimoEstoque)) {
+        $consultaToken = Http::get("http://ws.spotgifts.com.br/api/v1/authenticateclient?AccessKey=$this->ACCESS_KEY")->json();
+        $token = $consultaToken['Token'];
 
-            $consultaToken = Http::get("http://ws.spotgifts.com.br/api/v1/authenticateclient?AccessKey=$this->ACCESS_KEY")->json();
-            $token = $consultaToken['Token'];
+        if (@$diffEstoque >= 15 || is_null($ultimoEstoque)) {
+            
             $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/stocks?token=$token&lang=PT")->json();
 
             SkuQuantity::truncate();
@@ -76,8 +77,6 @@ class refreshDatabase implements ShouldQueue
             }
         }
 
-        $consultaToken = Http::get("http://ws.spotgifts.com.br/api/v1/authenticateclient?AccessKey=$this->ACCESS_KEY")->json();
-        $token = $consultaToken['Token'];
         $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/productsTree?token=$token&lang=PT")->json();
 
         ProdutoSpot::truncate();
