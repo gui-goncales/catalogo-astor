@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\refreshDatabase;
+use App\Jobs\RefreshDatabase;
 use App\Jobs\RefreshDataBaseXbz;
 use App\Jobs\RefreshStock;
 use Carbon\Carbon;
@@ -28,7 +28,6 @@ class JobController extends Controller
 
     public function refreshDatabaseSpot()
     {
-
         //Calculo Data Produtos Total
         $ultimoProdutos = DB::table('produto_spot')->latest('ProdReference')->first();
 
