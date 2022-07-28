@@ -37,3 +37,9 @@ Route::get('/xbz/consultaBanco/orderCodigo', [App\Http\Controllers\Xbz\ProdutosC
 Route::get('/xbz/consultaBanco/orderNome', [App\Http\Controllers\Xbz\ProdutosController::class, 'orderNome'])->name('orderNome');
 Route::get('/xbz/consultaBanco/orderCor', [App\Http\Controllers\Xbz\ProdutosController::class, 'orderCor'])->name('orderCor');
 Route::get('/xbz/consultaBanco/orderStatus', [App\Http\Controllers\Xbz\ProdutosController::class, 'orderStatus'])->name('orderStatus');
+
+
+//API JOB
+Route::get('/job/xbz/refreshDatabase', [App\Http\Controllers\JobController::class, 'refreshDatabaseXbz']);
+Route::get('/job/spot/refreshDatabase', [App\Http\Controllers\JobController::class, 'refreshDatabaseSpot']);
+

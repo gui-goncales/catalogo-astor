@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Xbz;
 use App\Http\Controllers\Controller;
 use App\Models\Produtos;
-use App\Http\Controllers\RoutineXbz;
 
 
 class HomeController extends Controller
@@ -25,7 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        RoutineXbz::needUpdate();
         $response = Produtos::orderBy('Nome', 'ASC')->paginate(100);
         $cores = Produtos::distinct()->get(['CorWebPrincipal', 'CorWebPrincipalId']);
 

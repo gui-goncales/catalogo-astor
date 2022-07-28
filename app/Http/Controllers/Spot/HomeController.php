@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Spot;
 
 use App\Models\ProdutoSpot;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\RoutineSpot;
 
 
 class HomeController extends Controller
@@ -26,8 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        RoutineSpot::needUpdate();
         //GET RESPONSE PRODUCTS
         $response = ProdutoSpot::orderby('Name', 'ASC')->paginate(100);
         $colorsDataBase = ProdutoSpot::select('Colors')->orderByRaw("Colors ASC")->get();

@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\ProdutoSpot;
 
-class refreshDatabase implements ShouldQueue
+class RefreshDatabase implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $ACCESS_KEY;
+    protected $TOKEN;
 
     /**
      * Create a new job instance.
@@ -28,6 +29,9 @@ class refreshDatabase implements ShouldQueue
     public function __construct()
     {
         $this->ACCESS_KEY = "iqUALsGPyTUKSeKv";
+        $consultaToken = Http::get("http://ws.spotgifts.com.br/api/v1/authenticateclient?AccessKey=$this->ACCESS_KEY")->json();
+        $this->TOKEN = $consultaToken['Token'];
+
     }
 
     /**
@@ -37,47 +41,9 @@ class refreshDatabase implements ShouldQueue
      */
     public function handle()
     {
-        //Calculo Data Estoque Produtos
-        $ultimoEstoque = DB::table('sku_quantity_spot')->latest('sku')->first();
 
-        if (!is_null($ultimoEstoque)) {
-            $diffEstoque = Carbon::now()->diffInMinutes($ultimoEstoque->created_at);
-        }
-
-        $consultaToken = Http::get("http://ws.spotgifts.com.br/api/v1/authenticateclient?AccessKey=$this->ACCESS_KEY")->json();
-        $token = $consultaToken['Token'];
-
-        if (@$diffEstoque >= 15 || is_null($ultimoEstoque)) {
-            
-            $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/stocks?token=$token&lang=PT")->json();
-
-            SkuQuantity::truncate();
-
-            foreach ($retorno['Stocks'] as $key => $value) {
-
-                $SkuQuantity = new SkuQuantity;
-                $SkuQuantity->Sku = $value['Sku'];
-                $SkuQuantity->Quantity = $value['Quantity'];
-                $SkuQuantity->NextQuantity1 = $value['NextQuantity1'];
-                $SkuQuantity->NextDate1 = $value['NextDate1'];
-                $SkuQuantity->NextQuantity2 = $value['NextQuantity2'];
-                $SkuQuantity->NextDate2 = $value['NextDate2'];
-                $SkuQuantity->NextQuantity3 = $value['NextQuantity3'];
-                $SkuQuantity->NextDate3 = $value['NextDate3'];
-                $SkuQuantity->NextQuantity4 = $value['NextQuantity4'];
-                $SkuQuantity->NextDate4 = $value['NextDate4'];
-                $SkuQuantity->NextQuantity5 = $value['NextQuantity5'];
-                $SkuQuantity->NextDate5 = $value['NextDate5'];
-                $SkuQuantity->NextQuantity6 = $value['NextQuantity6'];
-                $SkuQuantity->NextDate6 = $value['NextDate6'];
-                $SkuQuantity->WebSku = $value['WebSku'];
-                $SkuQuantity->Country = $value['Country'];
-
-                $SkuQuantity->save();
-            }
-        }
-
-        $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/productsTree?token=$token&lang=PT")->json();
+      
+        $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/productsTree?token=$this->TOKEN&lang=PT")->json();
 
         ProdutoSpot::truncate();
         productOptionalsSpot::truncate();
@@ -193,6 +159,43 @@ class refreshDatabase implements ShouldQueue
                 $productOptionalsSpot->SizeWidthCM = @$value2['SizeWidthCM'];
                 $productOptionalsSpot->LastSale = @$value2['LastSale'];
                 $productOptionalsSpot->save();
+            }
+        }
+
+        //Calculo Data Estoque Produtos
+        $ultimoEstoque = DB::table('sku_quantity_spot')->latest('sku')->first();
+
+        if (!is_null($ultimoEstoque)) {
+            $diffEstoque = Carbon::now()->diffInMinutes($ultimoEstoque->created_at);
+        }
+
+        if (@$diffEstoque >= 15 || is_null($ultimoEstoque)) {
+
+            $retorno = Http::get("http://ws.spotgifts.com.br/api/v1/stocks?token=$this->TOKEN&lang=PT")->json();
+
+            SkuQuantity::truncate();
+
+            foreach ($retorno['Stocks'] as $key => $value) {
+
+                $SkuQuantity = new SkuQuantity;
+                $SkuQuantity->Sku = $value['Sku'];
+                $SkuQuantity->Quantity = $value['Quantity'];
+                $SkuQuantity->NextQuantity1 = $value['NextQuantity1'];
+                $SkuQuantity->NextDate1 = $value['NextDate1'];
+                $SkuQuantity->NextQuantity2 = $value['NextQuantity2'];
+                $SkuQuantity->NextDate2 = $value['NextDate2'];
+                $SkuQuantity->NextQuantity3 = $value['NextQuantity3'];
+                $SkuQuantity->NextDate3 = $value['NextDate3'];
+                $SkuQuantity->NextQuantity4 = $value['NextQuantity4'];
+                $SkuQuantity->NextDate4 = $value['NextDate4'];
+                $SkuQuantity->NextQuantity5 = $value['NextQuantity5'];
+                $SkuQuantity->NextDate5 = $value['NextDate5'];
+                $SkuQuantity->NextQuantity6 = $value['NextQuantity6'];
+                $SkuQuantity->NextDate6 = $value['NextDate6'];
+                $SkuQuantity->WebSku = $value['WebSku'];
+                $SkuQuantity->Country = $value['Country'];
+
+                $SkuQuantity->save();
             }
         }
     }
