@@ -35,7 +35,8 @@ class RefreshDataBaseXbz implements ShouldQueue
         $response = Http::get('https://api.minhaxbz.com.br:5001/api/clientes/GetListaDeProdutos?cnpj=11728594000178&token=4C8EC5A014')->json();
 			
         Produtos::truncate();
-
+        
+        $array_insert = array();
         foreach ($response as $key => $value) {
 
                 $produtos = new Produtos;
@@ -67,6 +68,7 @@ class RefreshDataBaseXbz implements ShouldQueue
                 $produtos->QuantidadeDisponivel = $value['QuantidadeDisponivel'];
                 $produtos->Ncm = $value['Ncm'];
                 $produtos->save();
+                DB::table('produtos')->insert($array);
         }
     }
 }
