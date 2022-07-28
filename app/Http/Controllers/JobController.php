@@ -24,6 +24,10 @@ class JobController extends Controller
        {
             RefreshDataBaseXbz::dispatch();
        }
+
+       return response()->json([
+        'success' => 'true',
+        ])->header('Content-Type', 'text/json');
     }
 
     public function refreshDatabaseSpot()
@@ -49,5 +53,10 @@ class JobController extends Controller
         if (@$diffEstoque >= 15 || is_null($ultimoEstoque)) {
             RefreshStock::dispatch();
         }
+
+        return response()->json([
+            'success' => 'true',
+        ])->header('Content-Type', 'text/json');
+            
     }
 }
