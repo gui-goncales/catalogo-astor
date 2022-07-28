@@ -27,7 +27,7 @@ class JobController extends Controller
 
        return response()->json([
         'success' => 'true',
-        ])->header('Content-Type', 'text/json');
+        ]);
     }
 
     public function refreshDatabaseSpot()
@@ -56,7 +56,7 @@ class JobController extends Controller
 
         return response()->json([
             'success' => 'true',
-        ])->header('Content-Type', 'text/json');
+        ]);
             
     }
 }
