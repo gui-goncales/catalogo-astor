@@ -20,9 +20,7 @@ Route::get('/', [App\Http\Controllers\DecidingController::class, 'index'])->name
 
 //SPOT ROUTES
 Route::get('/spot', [App\Http\Controllers\Spot\HomeController::class, 'index'])->name('spot');
-Route::get('/spot/home', [App\Http\Controllers\Spot\HomeController::class, 'index'])->name('homeSpot');
 Route::get('/spot/consultaBanco', [App\Http\Controllers\Spot\ProdutosController::class, 'consultaBanco'])->name('consultaBancoSpot');
-Route::get('/spot/view/{ProdReference}', [App\Http\Controllers\Spot\ProdutosController::class, 'viewProduct'])->name('viewProduct');
 
 //SPOT ORDERS FILTERS ROUTES
 Route::get('/spot/consultaBanco/orderCodigo', [App\Http\Controllers\spot\ProdutosController::class, 'orderCodigo'])->name('orderCodigoSpot');
@@ -32,7 +30,6 @@ Route::get('/spot/consultaBanco/orderMarca', [App\Http\Controllers\spot\Produtos
 
 //XBZ ROUTES
 Route::get('/xbz', [App\Http\Controllers\Xbz\HomeController::class, 'index'])->name('xbz');
-Route::get('/xbz/home', [App\Http\Controllers\Xbz\HomeController::class, 'index'])->name('home');
 Route::get('/xbz/consultaBanco', [App\Http\Controllers\Xbz\ProdutosController::class, 'consultaBanco'])->name('consultaBanco');
 
 //XBZ ORDERS FILTERS ROUTES
@@ -40,3 +37,10 @@ Route::get('/xbz/consultaBanco/orderCodigo', [App\Http\Controllers\Xbz\ProdutosC
 Route::get('/xbz/consultaBanco/orderNome', [App\Http\Controllers\Xbz\ProdutosController::class, 'orderNome'])->name('orderNome');
 Route::get('/xbz/consultaBanco/orderCor', [App\Http\Controllers\Xbz\ProdutosController::class, 'orderCor'])->name('orderCor');
 Route::get('/xbz/consultaBanco/orderStatus', [App\Http\Controllers\Xbz\ProdutosController::class, 'orderStatus'])->name('orderStatus');
+
+
+//API JOB
+Route::get('/job/xbz/refreshDatabase', [App\Http\Controllers\JobController::class, 'refreshDatabaseXbz']);
+Route::get('/job/spot/refreshDatabase', [App\Http\Controllers\JobController::class, 'refreshDatabaseSpot']);
+Route::get('/job/spot/refreshStock', [App\Http\Controllers\JobController::class, 'refreshStock']);
+

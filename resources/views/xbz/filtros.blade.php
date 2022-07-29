@@ -57,7 +57,7 @@
           </select>
         </div>
 
-        <div class="item-group itemClear col-12 col-xl-2 align-center animation-element slide-aparece"><a href="{{route('home')}}" class="btn btn-lg btn-danger bntlimpascampos"><span class="material-icons">delete_forever</span> Limpar Busca</a></div>
+        <div class="item-group itemClear col-12 col-xl-2 align-center animation-element slide-aparece"><a href="{{route('xbz')}}" class="btn btn-lg btn-danger bntlimpascampos"><span class="material-icons">delete_forever</span> Limpar Busca</a></div>
         <div class="item-group itemClear col-12 col-xl-4 animation-element slide-aparece" style="text-align: center;">
           <button type="submit" class="btn btn-lg btn-primary btnpesquisar"><span class="material-icons">search</span> Pesquisar</button>
         </div>
