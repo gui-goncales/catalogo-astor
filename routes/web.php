@@ -42,4 +42,5 @@ Route::get('/xbz/consultaBanco/orderStatus', [App\Http\Controllers\Xbz\ProdutosC
 //API JOB
 Route::get('/job/xbz/refreshDatabase', [App\Http\Controllers\JobController::class, 'refreshDatabaseXbz']);
 Route::get('/job/spot/refreshDatabase', [App\Http\Controllers\JobController::class, 'refreshDatabaseSpot']);
+Route::get('/job/spot/refreshStock', [App\Http\Controllers\JobController::class, 'refreshStock']);
 

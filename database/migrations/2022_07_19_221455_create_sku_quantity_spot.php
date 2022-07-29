@@ -14,7 +14,7 @@ class CreateSkuQuantitySpot extends Migration
     public function up()
     {
         Schema::create('sku_quantity_spot', function (Blueprint $table) {
-            $table->string("Sku")->nullable();
+            $table->string("Sku");
             $table->integer("Quantity")->nullable();
             $table->string("NextQuantity1")->nullable();
             $table->string("NextDate1")->nullable();

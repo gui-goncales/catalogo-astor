@@ -19,6 +19,8 @@ class RefreshStock implements ShouldQueue
 
     protected $ACCESS_KEY;
 
+    const EMPTY = "";
+
     /**
      * Create a new job instance.
      *
@@ -27,6 +29,16 @@ class RefreshStock implements ShouldQueue
     public function __construct()
     {
         $this->ACCESS_KEY = "iqUALsGPyTUKSeKv";
+    }
+
+    function isEmpty($parameter)
+    {
+        if( $parameter === self::EMPTY || $parameter === null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -42,27 +54,40 @@ class RefreshStock implements ShouldQueue
 
         SkuQuantity::truncate();
 
+        $array_sku_quantity_insert = array();
         foreach ($retorno['Stocks'] as $key => $value) {
 
-            $SkuQuantity = new SkuQuantity;
-            $SkuQuantity->Sku = $value['Sku'];
-            $SkuQuantity->Quantity = $value['Quantity'];
-            $SkuQuantity->NextQuantity1 = $value['NextQuantity1'];
-            $SkuQuantity->NextDate1 = $value['NextDate1'];
-            $SkuQuantity->NextQuantity2 = $value['NextQuantity2'];
-            $SkuQuantity->NextDate2 = $value['NextDate2'];
-            $SkuQuantity->NextQuantity3 = $value['NextQuantity3'];
-            $SkuQuantity->NextDate3 = $value['NextDate3'];
-            $SkuQuantity->NextQuantity4 = $value['NextQuantity4'];
-            $SkuQuantity->NextDate4 = $value['NextDate4'];
-            $SkuQuantity->NextQuantity5 = $value['NextQuantity5'];
-            $SkuQuantity->NextDate5 = $value['NextDate5'];
-            $SkuQuantity->NextQuantity6 = $value['NextQuantity6'];
-            $SkuQuantity->NextDate6 = $value['NextDate6'];
-            $SkuQuantity->WebSku = $value['WebSku'];
-            $SkuQuantity->Country = $value['Country'];
+            $array_quantity = array();
+            $array_quantity['Sku'] = $value['Sku'];
+            $array_quantity['Quantity'] = $value['Quantity'];
+            $array_quantity['NextQuantity1'] = $this->isEmpty($value['NextQuantity1']) ? self::EMPTY : $value['NextQuantity1'];
+            $array_quantity['NextDate1'] = $this->isEmpty($value['NextDate1']) ? self::EMPTY : $value['NextDate1'];
+            $array_quantity['NextQuantity2'] = $this->isEmpty($value['NextQuantity2']) ? self::EMPTY : $value['NextQuantity2'];
+            $array_quantity['NextDate2'] = $this->isEmpty($value['NextDate2']) ? self::EMPTY : $value['NextDate2'];
+            $array_quantity['NextQuantity3'] = $this->isEmpty($value['NextQuantity3']) ? self::EMPTY : $value['NextQuantity3'];
+            $array_quantity['NextDate3'] = $this->isEmpty($value['NextDate3']) ? self::EMPTY : $value['NextDate3'];
+            $array_quantity['NextQuantity4'] = $this->isEmpty($value['NextQuantity4']) ? self::EMPTY : $value['NextQuantity4'];
+            $array_quantity['NextDate4'] = $this->isEmpty($value['NextDate4']) ? self::EMPTY : $value['NextDate4'];
+            $array_quantity['NextQuantity5'] = $this->isEmpty($value['NextQuantity5']) ? self::EMPTY : $value['NextQuantity5'];
+            $array_quantity['NextDate5'] = $this->isEmpty($value['NextDate5']) ? self::EMPTY : $value['NextDate5'];
+            $array_quantity['NextQuantity6'] = $this->isEmpty($value['NextQuantity6']) ? self::EMPTY : $value['NextQuantity6'];
+            $array_quantity['NextDate6'] = $this->isEmpty($value['NextDate6']) ? self::EMPTY : $value['NextDate6'];
+            $array_quantity['WebSku'] = $this->isEmpty($value['WebSku']) ? self::EMPTY : $value['WebSku'];
+            $array_quantity['Country'] = $this->isEmpty($value['Country']) ? self::EMPTY : $value['Country'];
 
-            $SkuQuantity->save();
+            array_push($array_sku_quantity_insert, $array_quantity);
         }
+        
+        unset($retorno);
+        $avg = count($array_sku_quantity_insert)/2;
+
+        foreach (array_chunk($array_sku_quantity_insert,$avg) as $t)  
+        {
+            DB::table('sku_quantity_spot')->insert($t);
+        }
+
+        unset($array_sku_quantity_insert);
+
+        return ;
     }
 }

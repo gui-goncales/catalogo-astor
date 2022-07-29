@@ -43,6 +43,13 @@ class JobController extends Controller
             RefreshDatabase::dispatch();
         }
 
+        return response()->json([
+            'success' => 'true',
+        ]);
+            
+    }
+
+    public function refreshStock(){
         //Calculo Data Estoque Produtos
         $ultimoEstoque = DB::table('sku_quantity_spot')->latest('sku')->first();
 
@@ -57,6 +64,5 @@ class JobController extends Controller
         return response()->json([
             'success' => 'true',
         ]);
-            
     }
 }
