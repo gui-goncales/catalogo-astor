@@ -13,6 +13,7 @@ body {
 
 .takeLogin {
     padding: 50px 0;
+    margin: 0 auto;
 }
 
 .login_form .card-body {
