@@ -3,16 +3,17 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use App\Jobs\RefreshStock;
 
-class ExampleTest extends TestCase
+class TesteRefreshDataBaseSpot extends TestCase
 {
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function test_example()
+    public function execute()
     {
-        $this->assertTrue(true);
+        RefreshStock::dispatch();
     }
 }

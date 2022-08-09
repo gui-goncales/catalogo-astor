@@ -268,7 +268,7 @@ span.material-icons {
 }
 
 .container {
-    display: flex;    
+    display: flex;
 }
 
 .img_produto {
@@ -329,4 +329,29 @@ span.material-icons {
     -o-transform: translate(0px, 0px);
     -ms-transform: translate(0px, 0px);
     transform: translate3d(0px, 0px, 0px);
+}
+
+
+.moreItems {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.aditional_details .aditional {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.aditional b {
+    color: #151c29;
+}
+
+.moreItems .itemChild b {
+    color: #151c29;
+}
+
+.moreItems .itemChild {
+    margin-bottom: 20px;
 }

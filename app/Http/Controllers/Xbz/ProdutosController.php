@@ -28,23 +28,17 @@ class ProdutosController extends Controller
 
         switch ($request->parameter) {
             case 'up':
-                $response = Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
-                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
-                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
-                ->orderByRaw("CodigoComposto ASC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "ASC";
                 $codigoFiltragem = TRUE;
                 break;
 
             case 'down':
-                $response = Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
-                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
-                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
-                ->orderByRaw("CodigoComposto DESC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "DESC";
                 $codigoFiltragem = FALSE;
                 break;
         }
+
+        $response = $this->sqlOrderExecXbz('CodigoComposto', $upOrDown, $request);
                     
         $cores = Produtos::distinct()->get(['CorWebPrincipal', 'CorWebPrincipalId']);
 
@@ -54,26 +48,19 @@ class ProdutosController extends Controller
 
     public function orderNome(Request $request)
     {
-
         switch ($request->parameter) {
             case 'up':
-                $response = Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
-                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
-                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
-                ->orderByRaw("Nome ASC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "ASC";
                 $nomeFiltragem = TRUE;
                 break;
 
             case 'down':
-                $response = Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
-                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
-                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
-                ->orderByRaw("Nome DESC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "DESC";
                 $nomeFiltragem = FALSE;
                 break;
         }
+
+        $response = $this->sqlOrderExecXbz('Nome', $upOrDown, $request);
 
         $cores = Produtos::distinct()->get(['CorWebPrincipal', 'CorWebPrincipalId']);
 
@@ -86,23 +73,17 @@ class ProdutosController extends Controller
 
         switch ($request->parameter) {
             case 'up':
-                $response = Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
-                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
-                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
-                ->orderByRaw("CorWebPrincipal ASC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "ASC";
                 $corFiltragem = TRUE;
                 break;
 
             case 'down':
-                $response = Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
-                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
-                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
-                ->orderByRaw("CorWebPrincipal DESC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "DESC";
                 $corFiltragem = FALSE;
                 break;
         }
+
+        $response = $this->sqlOrderExecXbz('CorWebPrincipal', $upOrDown, $request);
 
         $cores = Produtos::distinct()->get(['CorWebPrincipal', 'CorWebPrincipalId']);
 
@@ -115,23 +96,17 @@ class ProdutosController extends Controller
 
         switch ($request->parameter) {
             case 'up':
-                $response = Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
-                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
-                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
-                ->orderByRaw("IdStatusConfiabilidade ASC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "ASC";
                 $statusFiltragrem = TRUE;
                 break;
 
             case 'down':
-                $response = Produtos::where('Nome', 'LIKE', '%'.$request->nome.'%')
-                ->where('CodigoComposto', 'LIKE', '%'.$request->codigo.'%')
-                ->where('CorWebPrincipal', 'LIKE', '%'.$request->cor.'%')
-                ->orderByRaw("IdStatusConfiabilidade DESC")
-                ->paginate(100)->appends(request()->query());
+                $upOrDown = "DESC";
                 $statusFiltragrem = FALSE;
                 break;
         }
+
+        $response = $this->sqlOrderExecXbz('IdStatusConfiabilidade', $upOrDown, $request);
 
         $cores = Produtos::distinct()->get(['CorWebPrincipal', 'CorWebPrincipalId']);
 

@@ -28,7 +28,7 @@
           <input type="text" class="form-control" placeholder="Quantidade" aria-label="quantidade" aria-describedby="quantidade" name="quantidade" value="{{@$_GET['quantidade']}}">
         </div>
 
-        <div class="item-group col-12 col-sm-3 animation-element slide-aparece">
+        {{-- <div class="item-group col-12 col-sm-3 animation-element slide-aparece">
           <label for="brand" class="form-label">Marca:</label>
           <select class="form-control" name="brand" id="brand">
             <option value="" selected>Escolha uma marca</option>
@@ -36,14 +36,14 @@
               <option value="{{$value['Brand']}}">{{$value['Brand']}}</option>
             @endforeach
           </select>
-        </div>
+        </div> --}}
 
         <div class="item-group col-12 col-sm-3 animation-element slide-aparece">
           <label for="categoria" class="form-label">Categoria:</label>
           <select class="form-control" name="categoria" id="categoria">
             <option value="" selected>Escolha uma marca</option>
             @foreach($categoria as $cadaum => $value)
-              <option value="{{$value['Type']}}">{{$value['Type']}}</option>
+              <option value="{{$value['SubType']}}">{{$value['SubType']}}</option>
             @endforeach
           </select>
         </div>
@@ -58,7 +58,7 @@
           </select>
         </div>
 
-        <div class="item-group itemClear col-12 col-xl-2 align-center animation-element slide-aparece"><a href="{{route('homeSpot')}}" class="btn btn-lg btn-danger bntlimpascampos"><span class="material-icons">delete_forever</span> Limpar Busca</a></div>
+        <div class="item-group itemClear col-12 col-xl-2 align-center animation-element slide-aparece"><a href="{{route('spot')}}" class="btn btn-lg btn-danger bntlimpascampos"><span class="material-icons">delete_forever</span> Limpar Busca</a></div>
         <div class="item-group itemClear col-12 col-xl-4 animation-element slide-aparece" style="text-align: center;">
           <button type="submit" class="btn btn-lg btn-primary btnpesquisar"><span class="material-icons">search</span> Pesquisar</button>
         </div>
