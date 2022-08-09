@@ -48,12 +48,12 @@
                                 @foreach($sku as $infoSku)
                                 <div class="itemChild col-6 col-md-3">
                                     <p><b>Cor:</b> <span style="background:{{$infoSku['ColorHex']}}; width: 10px; height: 10px; display: inline-block; border: 1px solid #ededed;"></span> {{$infoSku['ColorDesc']}}</p>
-                                    <p><b>Quantidade:</b> {{$infoSku['Quantity']}}</p>
                                     @if($infoSku['Size'] != null)
                                     <p><b>Tamanho:</b> {{$infoSku['Size']}}</p>
                                     @else
-                                   
+
                                     @endif
+                                    <p><b>Quantidade:</b> {{$infoSku['Quantity']}}</p>
                                     <p><b>Proxima Remessa:</b>
                                         @if($infoSku['NextQuantity'] == null)
                                         Sem previsão
